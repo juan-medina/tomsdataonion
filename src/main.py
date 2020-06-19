@@ -22,6 +22,7 @@
 
 import logging
 import os
+import shutil
 
 log = logging.getLogger(__name__)
 
@@ -44,13 +45,17 @@ def slice_layer_1(input_file_name, output_file_name):
 	log.info("%s completed", output_file_name)
 
 
+def create_directory(path):
+	if os.path.exists("data"):
+		log.info("directory %s exist, removing it...", path)
+		shutil.rmtree(path)
+	log.info("directory %s created", path)
+	os.mkdir(path)
+
+
 def main():
 	log.info("Let's slice the onion...")
-	if not os.path.exists("data"):
-		log.info("creating data directory..")
-		os.mkdir("data")
-	else:
-		log.warning("data directory already exists.")
+	create_directory("data")
 	slice_layer_1("puzzle.txt", "data/layer_1_undecoded.dat")
 
 
